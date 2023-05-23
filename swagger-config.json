@@ -15,9 +15,10 @@
     }
   ],
   "paths": {
-    "/login" : {
+    "/user/signin" : {
       "post" : {
-        "summary": "User login",
+        "tags": ["User"],
+        "summary": "Sign in user",
         "requestBody": {
           "required": true,
           "content": {
@@ -90,12 +91,12 @@
                       "type": "string",
                       "default": "Unauthorized"
                     },
-                    "data":{
+                    "errors":{
                       "type": "object",
                       "properties": {
                         "message": {
                           "type": "string",
-                          "default": "Incorrect username or password."
+                          "default": "Incorrect username or password"
                         }
                       }
                     }
@@ -107,8 +108,9 @@
         }
       }
     },
-    "/register" : {
+    "/user/signup" : {
       "post": {
+        "tags": ["User"],
         "summary": "Create new user",
         "requestBody": {
           "required": true,
@@ -180,12 +182,129 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Email Invalid or Password doesn't meet criteria",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "default": "400"
+                    },
+                    "status": {
+                      "type": "string",
+                      "default": "Bad Request"
+                    },
+                    "errors":{
+                      "type": "object",
+                      "properties": {
+                        "message": {
+                          "type": "string",
+                          "default": "Error message"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Email or Username already exists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "default": "409"
+                    },
+                    "status": {
+                      "type": "string",
+                      "default": "Conflict"
+                    },
+                    "errors":{
+                      "type": "object",
+                      "properties": {
+                        "message": {
+                          "type": "string",
+                          "default": "Error message"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/signout" : {
+      "post": {
+        "tags": ["User"],
+        "summary": "Sign out current user",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "username",
+                  "password",
+                  "email"
+                ],
+                "properties": {
+                  "accessToken": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Sign out success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "default": "200"
+                    },
+                    "status": {
+                      "type": "string",
+                      "default": "OK"
+                    },
+                    "data":{
+                      "type": "object",
+                      "properties": {
+                        "message": {
+                          "type": "string",
+                          "default": "Sign out success"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
     },
     "/user/{username}" : {
       "get" : {
+        "tags": ["User"],
         "summary": "Get user details",
         "responses": {
 
@@ -196,6 +315,91 @@
             "in": "path",
             "required": true,
             "description": "username of user",
+            "schema" : {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/attractions" : {
+      "get" : {
+        "tags": ["Attraction"],
+        "summary": "Get All Attractions",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "default": "200"
+                    },
+                    "status": {
+                      "type": "string",
+                      "default": "OK"
+                    },
+                    "data":{
+                      "type": "object",
+                      "properties": {
+                        "message": {
+                          "type": "string",
+                          "default": "Success"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/attraction/{id_attraction}" : {
+      "get" : {
+        "tags": ["Attraction"],
+        "summary": "Get attraction details",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "default": "200"
+                    },
+                    "status": {
+                      "type": "string",
+                      "default": "OK"
+                    },
+                    "data":{
+                      "type": "object",
+                      "properties": {
+                        "message": {
+                          "type": "string",
+                          "default": "Success"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id_attraction",
+            "in": "path",
+            "required": true,
+            "description": "attraction id",
             "schema" : {
               "type": "string"
             }
