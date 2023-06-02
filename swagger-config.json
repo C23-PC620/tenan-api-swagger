@@ -26,12 +26,13 @@
               "schema" : {
                 "type": "object",
                 "required": [
-                  "username",
+                  "email",
                   "password"
                 ],
                 "properties": {
-                  "username": {
+                  "email": {
                     "type": "string",
+                    "format": "email",
                     "minLength": 1
                   },
                   "password" : {
@@ -96,7 +97,7 @@
                       "properties": {
                         "message": {
                           "type": "string",
-                          "default": "Incorrect username or password"
+                          "default": "Incorrect email or password"
                         }
                       }
                     }
@@ -119,16 +120,16 @@
               "examples": {
                 "example": {
                   "value": {
-                    "username": "string",
-                    "password": "string123",
-                    "email": "user@example.com"
+                    "name": "string",
+                    "email": "user@example.com",
+                    "password": "string123"
                   }
                 }
               },
               "schema": {
                 "type": "object",
                 "required": [
-                  "username",
+                  "name",
                   "password",
                   "email"
                 ],
@@ -254,16 +255,7 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": [
-                  "username",
-                  "password",
-                  "email"
-                ],
                 "properties": {
-                  "accessToken": {
-                    "type": "string",
-                    "minLength": 1
-                  }
                 }
               }
             }
@@ -291,6 +283,112 @@
                         "message": {
                           "type": "string",
                           "default": "Sign out success"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "No Refresh Token Provided",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "default": "401"
+                    },
+                    "status": {
+                      "type": "string",
+                      "default": "Unauthorized"
+                    },
+                    "errors":{
+                      "type": "object",
+                      "properties": {
+                        "message": {
+                          "type": "string",
+                          "default": "No refresh token provided"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/token" : {
+      "post": {
+        "tags": ["User"],
+        "summary": "Get new access token",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Sign out success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "default": "200"
+                    },
+                    "status": {
+                      "type": "string",
+                      "default": "OK"
+                    },
+                    "data":{
+                      "type": "object",
+                      "properties": {
+                        "accessToken": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "No refresh token, refresh token invalid or token expired",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "default": "401"
+                    },
+                    "status": {
+                      "type": "string",
+                      "default": "Unauthorized"
+                    },
+                    "errors":{
+                      "type": "object",
+                      "properties": {
+                        "message": {
+                          "type": "string",
+                          "default": "Error message"
                         }
                       }
                     }
