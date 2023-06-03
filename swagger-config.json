@@ -407,19 +407,14 @@
                     "data":{
                       "type": "object",
                       "properties": {
-                        "user": {
-                          "type": "object",
-                          "properties": {
-                            "user_id":{
-                              "type": "string"
-                            },
-                            "name":{
-                              "type": "string"
-                            },
-                            "email":{
-                              "type": "string"
-                            }
-                          }
+                        "user_id":{
+                          "type": "string"
+                        },
+                        "name":{
+                          "type": "string"
+                        },
+                        "email":{
+                          "type": "string"
                         }
                       }
                     }
@@ -467,26 +462,21 @@
                       "default": "OK"
                     },
                     "data":{
-                      "type": "object",
-                      "properties": {
-                        "attractions": {
-                          "type": "array",
-                          "items": {
-                            "type": "object",
-                            "properties": {
-                              "id_wisata":{
-                                "type": "string"
-                              },
-                              "nama_tempat":{
-                                "type": "string"
-                              },
-                              "rating":{
-                                "type": "string"
-                              },
-                              "nama_daerah":{
-                                "type": "string"
-                              }
-                            }
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id_wisata":{
+                            "type": "string"
+                          },
+                          "nama_tempat":{
+                            "type": "string"
+                          },
+                          "rating":{
+                            "type": "string"
+                          },
+                          "nama_daerah":{
+                            "type": "string"
                           }
                         }
                       }
@@ -759,34 +749,29 @@
                     "data":{
                       "type": "object",
                       "properties": {
-                        "attraction": {
-                          "type": "object",
-                          "properties": {
-                            "attraction_id": {
-                              "type": "string"
-                            },
-                            "rating": {
-                              "type": "string"
-                            },
-                            "nama_tempat": {
-                              "type": "string"
-                            },
-                            "description": {
-                              "type": "string"
-                            },
-                            "category": {
-                              "type": "string"
-                            },
-                            "nama_daerah": {
-                              "type": "string"
-                            },
-                            "alamat": {
-                              "type": "string"
-                            },
-                            "image_url": {
-                              "type": "string"
-                            }
-                          }
+                        "attraction_id": {
+                          "type": "string"
+                        },
+                        "rating": {
+                          "type": "string"
+                        },
+                        "nama_tempat": {
+                          "type": "string"
+                        },
+                        "description": {
+                          "type": "string"
+                        },
+                        "category": {
+                          "type": "string"
+                        },
+                        "nama_daerah": {
+                          "type": "string"
+                        },
+                        "alamat": {
+                          "type": "string"
+                        },
+                        "image_url": {
+                          "type": "string"
                         }
                       }
                     }
