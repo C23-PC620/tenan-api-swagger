@@ -247,20 +247,13 @@
     },
     "/user/signout" : {
       "post": {
+        "security": [
+          {
+            "BearerAuth" : []
+          }
+        ],
         "tags": ["User"],
         "summary": "Sign out current user",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                }
-              }
-            }
-          }
-        },
         "responses": {
           "200": {
             "description": "Sign out success",
@@ -325,6 +318,11 @@
     },
     "/user/token" : {
       "post": {
+        "security": [
+          {
+            "BearerAuth" : []
+          }
+        ],
         "tags": ["User"],
         "summary": "Get new access token",
         "requestBody": {
@@ -341,7 +339,7 @@
         },
         "responses": {
           "200": {
-            "description": "Sign out success",
+            "description": "Get new access token success",
             "content": {
               "application/json": {
                 "schema": {
@@ -373,22 +371,231 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "$ref": "#/components/schemas/TokenEror"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/my-profile" : {
+      "get" : {
+        "security": [
+          {
+            "BearerAuth" : []
+          }
+        ],
+        "tags": ["User"],
+        "summary": "Get user details",
+        "responses": {
+          "200": {
+            "description": "Register Success",
+            "content": {
+              "application/json": {
+                "schema": {
                   "type": "object",
                   "properties": {
                     "code": {
                       "type": "string",
-                      "default": "401"
+                      "default": "200"
                     },
                     "status": {
                       "type": "string",
-                      "default": "Unauthorized"
+                      "default": "OK"
+                    },
+                    "data":{
+                      "type": "object",
+                      "properties": {
+                        "user": {
+                          "type": "object",
+                          "properties": {
+                            "user_id":{
+                              "type": "string"
+                            },
+                            "name":{
+                              "type": "string"
+                            },
+                            "email":{
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "No refresh token, refresh token invalid or token expired",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TokenEror"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/my-favorites" : {
+      "get" : {
+        "security": [
+          {
+            "BearerAuth" : []
+          }
+        ],
+        "tags": ["User"],
+        "summary": "Get user attractions favorites",
+        "responses": {
+          "200": {
+            "description": "Register Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "default": "200"
+                    },
+                    "status": {
+                      "type": "string",
+                      "default": "OK"
+                    },
+                    "data":{
+                      "type": "object",
+                      "properties": {
+                        "attractions": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id_wisata":{
+                                "type": "string"
+                              },
+                              "nama_tempat":{
+                                "type": "string"
+                              },
+                              "rating":{
+                                "type": "string"
+                              },
+                              "nama_daerah":{
+                                "type": "string"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "No refresh token, refresh token invalid or token expired",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TokenEror"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post" : {
+        "security": [
+          {
+            "BearerAuth" : []
+          }
+        ],
+        "tags": ["User"],
+        "summary": "Save attraction to favorites",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json" : {
+              "schema" : {
+                "type": "object",
+                "required": [
+                  "attraction_id"
+                ],
+                "properties": {
+                  "attraction_id": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Attraction added to favorites",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "default": "200"
+                    },
+                    "status": {
+                      "type": "string",
+                      "default": "OK"
+                    },
+                    "data":{
+                      "type": "object",
+                      "properties": {
+                        "message": {
+                          "type": "string",
+                          "default": "Added to favorites"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "No refresh token, refresh token invalid or token expired",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TokenEror"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Attraction ID not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "default": "400"
+                    },
+                    "status": {
+                      "type": "string",
+                      "default": "Bad Request"
                     },
                     "errors":{
                       "type": "object",
                       "properties": {
                         "message": {
                           "type": "string",
-                          "default": "Error message"
+                          "default": "Attraction ID not found"
                         }
                       }
                     }
@@ -400,19 +607,91 @@
         }
       }
     },
-    "/user/{username}" : {
-      "get" : {
+    "/user/my-favorites/{attraction_id}" : {
+      "delete" : {
+        "security": [
+          {
+            "BearerAuth" : []
+          }
+        ],
         "tags": ["User"],
-        "summary": "Get user details",
+        "summary": "Remove attraction from favorites",
         "responses": {
-
+          "200": {
+            "description": "Attraction removed from favorites",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "default": "200"
+                    },
+                    "status": {
+                      "type": "string",
+                      "default": "OK"
+                    },
+                    "data":{
+                      "type": "object",
+                      "properties": {
+                        "message": {
+                          "type": "string",
+                          "default": "Removed from favorites"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "No refresh token, refresh token invalid or token expired",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TokenEror"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Attraction ID not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "default": "400"
+                    },
+                    "status": {
+                      "type": "string",
+                      "default": "Bad Request"
+                    },
+                    "errors":{
+                      "type": "object",
+                      "properties": {
+                        "message": {
+                          "type": "string",
+                          "default": "Attraction ID not found"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
         },
         "parameters": [
           {
-            "name": "username",
+            "name": "attraction_id",
             "in": "path",
             "required": true,
-            "description": "username of user",
+            "description": "attraction id",
             "schema" : {
               "type": "string"
             }
@@ -457,7 +736,7 @@
         }
       }
     },
-    "/attraction/{id_attraction}" : {
+    "/attractions/{attraction_id}" : {
       "get" : {
         "tags": ["Attraction"],
         "summary": "Get attraction details",
@@ -480,9 +759,34 @@
                     "data":{
                       "type": "object",
                       "properties": {
-                        "message": {
-                          "type": "string",
-                          "default": "Success"
+                        "attraction": {
+                          "type": "object",
+                          "properties": {
+                            "attraction_id": {
+                              "type": "string"
+                            },
+                            "rating": {
+                              "type": "string"
+                            },
+                            "nama_tempat": {
+                              "type": "string"
+                            },
+                            "description": {
+                              "type": "string"
+                            },
+                            "category": {
+                              "type": "string"
+                            },
+                            "nama_daerah": {
+                              "type": "string"
+                            },
+                            "alamat": {
+                              "type": "string"
+                            },
+                            "image_url": {
+                              "type": "string"
+                            }
+                          }
                         }
                       }
                     }
@@ -494,7 +798,7 @@
         },
         "parameters": [
           {
-            "name": "id_attraction",
+            "name": "attraction_id",
             "in": "path",
             "required": true,
             "description": "attraction id",
@@ -503,6 +807,40 @@
             }
           }
         ]
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "description": "Bearer Authentication using JWT for Tenan API",
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "jwt"
+      }
+    },
+    "schemas": {
+      "TokenEror": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "default": "401"
+          },
+          "status": {
+            "type": "string",
+            "default": "Unauthorized"
+          },
+          "errors":{
+            "type": "object",
+            "properties": {
+              "message": {
+                "type": "string",
+                "default": "Error message"
+              }
+            }
+          }
+        }
       }
     }
   }
