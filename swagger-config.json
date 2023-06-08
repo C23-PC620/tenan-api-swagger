@@ -469,13 +469,13 @@
                           "id_wisata":{
                             "type": "string"
                           },
-                          "nama_tempat":{
+                          "place_name":{
                             "type": "string"
                           },
                           "rating":{
                             "type": "string"
                           },
-                          "nama_daerah":{
+                          "city":{
                             "type": "string"
                           }
                         }
@@ -709,12 +709,45 @@
                       "type": "string",
                       "default": "OK"
                     },
+                    "current_page": {
+                      "type": "number",
+                      "default": 1
+                    },
+                    "total_page": {
+                      "type": "number",
+                      "default": 1
+                    },
+                    "total": {
+                      "type": "number",
+                      "default": 10
+                    },
+                    "size": {
+                      "type": "number",
+                      "default": 10
+                    },
                     "data":{
-                      "type": "object",
-                      "properties": {
-                        "message": {
-                          "type": "string",
-                          "default": "Success"
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "tourism_id":{
+                            "type": "string"
+                          },
+                          "place_name":{
+                            "type": "string"
+                          },
+                          "rating":{
+                            "type": "string"
+                          },
+                          "city":{
+                            "type": "string"
+                          },
+                          "category":{
+                            "type": "string"
+                          },
+                          "image_url":{
+                            "type": "string"
+                          }
                         }
                       }
                     }
@@ -723,7 +756,39 @@
               }
             }
           }
-        }
+        },
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "required": false,
+            "description": "Filtered by Tourism name.",
+            "example": "Monumen Nasional",
+            "schema" : {
+              "type": "string"
+            }
+          },
+          {
+            "name": "city",
+            "in": "query",
+            "required": false,
+            "example": "Jakarta",
+            "description": "Filtered by Tourism city.",
+            "schema" : {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "description": "Page info.",
+            "schema" : {
+              "type": "number",
+              "default": 1
+            }
+          }
+        ]
       }
     },
     "/tourisms/{tourism_id}" : {
@@ -764,7 +829,7 @@
                         "category": {
                           "type": "string"
                         },
-                        "nama_daerah": {
+                        "city": {
                           "type": "string"
                         },
                         "alamat": {
