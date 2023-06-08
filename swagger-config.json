@@ -444,7 +444,7 @@
           }
         ],
         "tags": ["User"],
-        "summary": "Get user attractions favorites",
+        "summary": "Get user tourisms favorites",
         "responses": {
           "200": {
             "description": "Register Success",
@@ -505,7 +505,7 @@
           }
         ],
         "tags": ["User"],
-        "summary": "Save attraction to favorites",
+        "summary": "Save tourisms to favorites",
         "requestBody": {
           "required": true,
           "content": {
@@ -513,10 +513,10 @@
               "schema" : {
                 "type": "object",
                 "required": [
-                  "attraction_id"
+                  "tourisms_id"
                 ],
                 "properties": {
-                  "attraction_id": {
+                  "tourisms_id": {
                     "type": "string",
                     "minLength": 1
                   }
@@ -527,7 +527,7 @@
         },
         "responses": {
           "200": {
-            "description": "Attraction added to favorites",
+            "description": "Tourism added to favorites",
             "content": {
               "application/json": {
                 "schema": {
@@ -566,7 +566,7 @@
             }
           },
           "400": {
-            "description": "Attraction ID not found",
+            "description": "Tourism ID not found",
             "content": {
               "application/json": {
                 "schema": {
@@ -585,7 +585,7 @@
                       "properties": {
                         "message": {
                           "type": "string",
-                          "default": "Attraction ID not found"
+                          "default": "Tourism ID not found"
                         }
                       }
                     }
@@ -597,7 +597,7 @@
         }
       }
     },
-    "/user/my-favorites/{attraction_id}" : {
+    "/user/my-favorites/{tourisms_id}" : {
       "delete" : {
         "security": [
           {
@@ -605,10 +605,10 @@
           }
         ],
         "tags": ["User"],
-        "summary": "Remove attraction from favorites",
+        "summary": "Remove tourism from favorites",
         "responses": {
           "200": {
-            "description": "Attraction removed from favorites",
+            "description": "tourism removed from favorites",
             "content": {
               "application/json": {
                 "schema": {
@@ -647,7 +647,7 @@
             }
           },
           "400": {
-            "description": "Attraction ID not found",
+            "description": "tourism ID not found",
             "content": {
               "application/json": {
                 "schema": {
@@ -666,7 +666,7 @@
                       "properties": {
                         "message": {
                           "type": "string",
-                          "default": "Attraction ID not found"
+                          "default": "tourism ID not found"
                         }
                       }
                     }
@@ -678,10 +678,10 @@
         },
         "parameters": [
           {
-            "name": "attraction_id",
+            "name": "tourism_id",
             "in": "path",
             "required": true,
-            "description": "attraction id",
+            "description": "tourism id",
             "schema" : {
               "type": "string"
             }
@@ -689,10 +689,10 @@
         ]
       }
     },
-    "/attractions" : {
+    "/tourisms" : {
       "get" : {
-        "tags": ["Attraction"],
-        "summary": "Get All Attractions",
+        "tags": ["tourism"],
+        "summary": "Get All tourisms",
         "responses": {
           "200": {
             "description": "Success",
@@ -726,10 +726,10 @@
         }
       }
     },
-    "/attractions/{attraction_id}" : {
+    "/tourisms/{tourism_id}" : {
       "get" : {
-        "tags": ["Attraction"],
-        "summary": "Get attraction details",
+        "tags": ["tourism"],
+        "summary": "Get tourism details",
         "responses": {
           "200": {
             "description": "Success",
@@ -749,7 +749,7 @@
                     "data":{
                       "type": "object",
                       "properties": {
-                        "attraction_id": {
+                        "tourism_id": {
                           "type": "string"
                         },
                         "rating": {
@@ -783,10 +783,10 @@
         },
         "parameters": [
           {
-            "name": "attraction_id",
+            "name": "tourism_id",
             "in": "path",
             "required": true,
-            "description": "attraction id",
+            "description": "tourism id",
             "schema" : {
               "type": "string"
             }
