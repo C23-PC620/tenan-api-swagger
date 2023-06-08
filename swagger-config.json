@@ -11,7 +11,7 @@
   },
   "servers": [
     {
-      "url": "https://api-dot-tenan.et.r.appspot.com/api/v1"
+      "url": "https://api-dot-tenan.et.r.appspot.com/v1"
     }
   ],
   "paths": {
