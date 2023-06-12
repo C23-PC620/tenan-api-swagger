@@ -820,7 +820,7 @@
                         "rating": {
                           "type": "string"
                         },
-                        "nama_tempat": {
+                        "place_name": {
                           "type": "string"
                         },
                         "description": {
@@ -832,7 +832,7 @@
                         "city": {
                           "type": "string"
                         },
-                        "alamat": {
+                        "address": {
                           "type": "string"
                         },
                         "image_url": {
