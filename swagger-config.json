@@ -791,7 +791,7 @@
         ]
       }
     },
-    "/tourisms/{tourism_id}" : {
+    "/tourisms/{tourismId}" : {
       "get" : {
         "tags": ["tourism"],
         "summary": "Get tourism details",
