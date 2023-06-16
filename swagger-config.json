@@ -15,6 +15,66 @@
     }
   ],
   "paths": {
+    "/" : {
+      "post" : {
+        "summary": "Check API Status",
+        "responses": {
+          "200": {
+            "description": "Active",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "default": "200"
+                    },
+                    "status": {
+                      "type": "string",
+                      "default": "OK"
+                    },
+                    "message": {
+                      "type": "string",
+                      "default": "Welcome to the tenan API"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Login Failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "default": "401"
+                    },
+                    "status": {
+                      "type": "string",
+                      "default": "Unauthorized"
+                    },
+                    "errors":{
+                      "type": "object",
+                      "properties": {
+                        "message": {
+                          "type": "string",
+                          "default": "Incorrect email or password"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/user/signin" : {
       "post" : {
         "tags": ["User"],
@@ -134,7 +194,7 @@
                   "email"
                 ],
                 "properties": {
-                  "username": {
+                  "name": {
                     "type": "string",
                     "minLength": 1
                   },
@@ -436,7 +496,7 @@
         }
       }
     },
-    "/user/my-favorites" : {
+    "/user/my-favorites-tourisms" : {
       "get" : {
         "security": [
           {
@@ -447,7 +507,7 @@
         "summary": "Get user tourisms favorites",
         "responses": {
           "200": {
-            "description": "Register Success",
+            "description": "Get data Success, if not no favorite tourism added",
             "content": {
               "application/json": {
                 "schema": {
@@ -466,7 +526,7 @@
                       "items": {
                         "type": "object",
                         "properties": {
-                          "id_wisata":{
+                          "tourism_id":{
                             "type": "string"
                           },
                           "place_name":{
@@ -476,6 +536,18 @@
                             "type": "string"
                           },
                           "city":{
+                            "type": "string"
+                          },
+                          "category":{
+                            "type": "string"
+                          },
+                          "longtitude":{
+                            "type": "number"
+                          },
+                          "latitude":{
+                            "type": "number"
+                          },
+                          "image_url":{
                             "type": "string"
                           }
                         }
@@ -492,6 +564,35 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/TokenEror"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "default": "500"
+                    },
+                    "status": {
+                      "type": "string",
+                      "default": "Internal Server Error"
+                    },
+                    "errors":{
+                      "type": "object",
+                      "properties": {
+                        "message": {
+                          "type": "string",
+                          "default": "An error occurred while fetching data"
+                        }
+                      }
+                    }
+                  }
                 }
               }
             }
@@ -565,7 +666,7 @@
               }
             }
           },
-          "400": {
+          "404": {
             "description": "Tourism ID not found",
             "content": {
               "application/json": {
@@ -574,18 +675,76 @@
                   "properties": {
                     "code": {
                       "type": "string",
-                      "default": "400"
+                      "default": "404"
                     },
                     "status": {
                       "type": "string",
-                      "default": "Bad Request"
+                      "default": "Not Found"
                     },
                     "errors":{
                       "type": "object",
                       "properties": {
                         "message": {
                           "type": "string",
-                          "default": "Tourism ID not found"
+                          "default": "the tourism ID you provided does not exist in our records"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Tourism ID already added to favorites",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "default": "409"
+                    },
+                    "status": {
+                      "type": "string",
+                      "default": "Conflict"
+                    },
+                    "errors":{
+                      "type": "object",
+                      "properties": {
+                        "message": {
+                          "type": "string",
+                          "default": "the tourism ID you provided already added to your favorites"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "default": "500"
+                    },
+                    "status": {
+                      "type": "string",
+                      "default": "Internal Server Error"
+                    },
+                    "errors":{
+                      "type": "object",
+                      "properties": {
+                        "message": {
+                          "type": "string",
+                          "default": "An error occurred while fetching data"
                         }
                       }
                     }
@@ -597,7 +756,7 @@
         }
       }
     },
-    "/user/my-favorites/{tourisms_id}" : {
+    "/user/my-favorites-tourisms/{tourism_id}" : {
       "delete" : {
         "security": [
           {
@@ -646,7 +805,7 @@
               }
             }
           },
-          "400": {
+          "404": {
             "description": "tourism ID not found",
             "content": {
               "application/json": {
@@ -655,18 +814,47 @@
                   "properties": {
                     "code": {
                       "type": "string",
-                      "default": "400"
+                      "default": "404"
                     },
                     "status": {
                       "type": "string",
-                      "default": "Bad Request"
+                      "default": "Not Found"
                     },
                     "errors":{
                       "type": "object",
                       "properties": {
                         "message": {
                           "type": "string",
-                          "default": "tourism ID not found"
+                          "default": "the tourism ID you provided does not exist in our records"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "default": "500"
+                    },
+                    "status": {
+                      "type": "string",
+                      "default": "Internal Server Error"
+                    },
+                    "errors":{
+                      "type": "object",
+                      "properties": {
+                        "message": {
+                          "type": "string",
+                          "default": "An error occurred while fetching data"
                         }
                       }
                     }
@@ -689,9 +877,387 @@
         ]
       }
     },
+    "/user/my-favorites-lodgings" : {
+      "get" : {
+        "security": [
+          {
+            "BearerAuth" : []
+          }
+        ],
+        "tags": ["User"],
+        "summary": "Get user lodgings favorites",
+        "responses": {
+          "200": {
+            "description": "Get data Success, if not no favorite lodging added",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "default": "200"
+                    },
+                    "status": {
+                      "type": "string",
+                      "default": "OK"
+                    },
+                    "data":{
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "lodging_id":{
+                            "type": "string"
+                          },
+                          "place_name":{
+                            "type": "string"
+                          },
+                          "rating":{
+                            "type": "string"
+                          },
+                          "city":{
+                            "type": "string"
+                          },
+                          "longtitude":{
+                            "type": "number"
+                          },
+                          "latitude":{
+                            "type": "number"
+                          },
+                          "image_url":{
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "No refresh token, refresh token invalid or token expired",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TokenEror"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "default": "500"
+                    },
+                    "status": {
+                      "type": "string",
+                      "default": "Internal Server Error"
+                    },
+                    "errors":{
+                      "type": "object",
+                      "properties": {
+                        "message": {
+                          "type": "string",
+                          "default": "An error occurred while fetching data"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post" : {
+        "security": [
+          {
+            "BearerAuth" : []
+          }
+        ],
+        "tags": ["User"],
+        "summary": "Save lodgings to favorites",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json" : {
+              "schema" : {
+                "type": "object",
+                "required": [
+                  "lodging_id"
+                ],
+                "properties": {
+                  "lodging_id": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Lodging added to favorites",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "default": "200"
+                    },
+                    "status": {
+                      "type": "string",
+                      "default": "OK"
+                    },
+                    "data":{
+                      "type": "object",
+                      "properties": {
+                        "message": {
+                          "type": "string",
+                          "default": "Added to favorites"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "No refresh token, refresh token invalid or token expired",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TokenEror"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Lodging ID not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "default": "404"
+                    },
+                    "status": {
+                      "type": "string",
+                      "default": "Not Found"
+                    },
+                    "errors":{
+                      "type": "object",
+                      "properties": {
+                        "message": {
+                          "type": "string",
+                          "default": "the lodging ID you provided does not exist in our records"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Lodging ID already added to favorites",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "default": "409"
+                    },
+                    "status": {
+                      "type": "string",
+                      "default": "Conflict"
+                    },
+                    "errors":{
+                      "type": "object",
+                      "properties": {
+                        "message": {
+                          "type": "string",
+                          "default": "the lodging ID you provided already added to your favorites"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "default": "500"
+                    },
+                    "status": {
+                      "type": "string",
+                      "default": "Internal Server Error"
+                    },
+                    "errors":{
+                      "type": "object",
+                      "properties": {
+                        "message": {
+                          "type": "string",
+                          "default": "An error occurred while fetching data"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/my-favorites-lodgings/{lodging_id}" : {
+      "delete" : {
+        "security": [
+          {
+            "BearerAuth" : []
+          }
+        ],
+        "tags": ["User"],
+        "summary": "Remove lodging from favorites",
+        "responses": {
+          "200": {
+            "description": "lodging removed from favorites",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "default": "200"
+                    },
+                    "status": {
+                      "type": "string",
+                      "default": "OK"
+                    },
+                    "data":{
+                      "type": "object",
+                      "properties": {
+                        "message": {
+                          "type": "string",
+                          "default": "Removed from favorites"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "No refresh token, refresh token invalid or token expired",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TokenEror"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "lodging ID not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "default": "404"
+                    },
+                    "status": {
+                      "type": "string",
+                      "default": "Not Found"
+                    },
+                    "errors":{
+                      "type": "object",
+                      "properties": {
+                        "message": {
+                          "type": "string",
+                          "default": "the lodging ID you provided does not exist in our records"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "default": "500"
+                    },
+                    "status": {
+                      "type": "string",
+                      "default": "Internal Server Error"
+                    },
+                    "errors":{
+                      "type": "object",
+                      "properties": {
+                        "message": {
+                          "type": "string",
+                          "default": "An error occurred while fetching data"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "lodging_id",
+            "in": "path",
+            "required": true,
+            "description": "lodging id",
+            "schema" : {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
     "/tourisms" : {
       "get" : {
-        "tags": ["tourism"],
+        "tags": ["Tourism"],
         "summary": "Get All tourisms",
         "responses": {
           "200": {
@@ -745,9 +1311,73 @@
                           "category":{
                             "type": "string"
                           },
+                          "longtitude":{
+                            "type": "number"
+                          },
+                          "latitude":{
+                            "type": "number"
+                          },
                           "image_url":{
                             "type": "string"
                           }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Places not found or page number exceeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "default": "404"
+                    },
+                    "status": {
+                      "type": "string",
+                      "default": "Not Found"
+                    },
+                    "errors":{
+                      "type": "object",
+                      "properties": {
+                        "message": {
+                          "type": "string",
+                          "default": "Error message"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "default": "500"
+                    },
+                    "status": {
+                      "type": "string",
+                      "default": "Internal Server Error"
+                    },
+                    "errors":{
+                      "type": "object",
+                      "properties": {
+                        "message": {
+                          "type": "string",
+                          "default": "An error occurred while fetching tourism"
                         }
                       }
                     }
@@ -791,9 +1421,14 @@
         ]
       }
     },
-    "/tourisms/{tourismId}" : {
+    "/tourisms/{tourismsId}" : {
       "get" : {
-        "tags": ["tourism"],
+        "security": [
+          {
+            "BearerAuth" : []
+          }
+        ],
+        "tags": ["Tourism"],
         "summary": "Get tourism details",
         "responses": {
           "200": {
@@ -829,6 +1464,147 @@
                         "category": {
                           "type": "string"
                         },
+                        "longtitude": {
+                          "type": "number"
+                        },
+                        "latitude": {
+                          "type": "number"
+                        },
+                        "city": {
+                          "type": "string"
+                        },
+                        "address": {
+                          "type": "string"
+                        },
+                        "image_url": {
+                          "type": "string"
+                        },
+                        "favorited": {
+                          "type": "boolean"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Tourism not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "default": "404"
+                    },
+                    "status": {
+                      "type": "string",
+                      "default": "Not Found"
+                    },
+                    "errors":{
+                      "type": "object",
+                      "properties": {
+                        "message": {
+                          "type": "string",
+                          "default": "Tourism not found"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "default": "500"
+                    },
+                    "status": {
+                      "type": "string",
+                      "default": "Internal Server Error"
+                    },
+                    "errors":{
+                      "type": "object",
+                      "properties": {
+                        "message": {
+                          "type": "string",
+                          "default": "An error occurred while fetching tourism"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "tourismsId",
+            "in": "path",
+            "required": true,
+            "description": "tourism id",
+            "schema" : {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/tourisms/city" : {
+      "get" : {
+        "tags": ["Tourism"],
+        "summary": "Get All City",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "default": "200"
+                    },
+                    "status": {
+                      "type": "string",
+                      "default": "OK"
+                    },
+                    "data":{
+                      "type": "object",
+                      "properties": {
+                        "tourism_id": {
+                          "type": "string"
+                        },
+                        "rating": {
+                          "type": "string"
+                        },
+                        "place_name": {
+                          "type": "string"
+                        },
+                        "description": {
+                          "type": "string"
+                        },
+                        "category": {
+                          "type": "string"
+                        },
+                        "longtitude": {
+                          "type": "number"
+                        },
+                        "latitude": {
+                          "type": "number"
+                        },
                         "city": {
                           "type": "string"
                         },
@@ -844,14 +1620,575 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "Tourism not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "default": "404"
+                    },
+                    "status": {
+                      "type": "string",
+                      "default": "Not Found"
+                    },
+                    "errors":{
+                      "type": "object",
+                      "properties": {
+                        "message": {
+                          "type": "string",
+                          "default": "Tourism not found"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "default": "500"
+                    },
+                    "status": {
+                      "type": "string",
+                      "default": "Internal Server Error"
+                    },
+                    "errors":{
+                      "type": "object",
+                      "properties": {
+                        "message": {
+                          "type": "string",
+                          "default": "An error occurred while fetching tourism"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
           }
         },
         "parameters": [
           {
-            "name": "tourism_id",
+            "name": "tourismId",
             "in": "path",
             "required": true,
             "description": "tourism id",
+            "schema" : {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/tourisms/recommendedHotels" : {
+      "post" : {
+        "tags": ["Tourism"],
+        "summary": "Get Recommended hotels by tourism location",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "default": "200"
+                    },
+                    "status": {
+                      "type": "string",
+                      "default": "OK"
+                    },
+                    "data":{
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "lodging_id":{
+                            "type": "string"
+                          },
+                          "place_name":{
+                            "type": "string"
+                          },
+                          "rating":{
+                            "type": "string"
+                          },
+                          "city":{
+                            "type": "string"
+                          },
+                          "image_url":{
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "default": "500"
+                    },
+                    "status": {
+                      "type": "string",
+                      "default": "Internal Server Error"
+                    },
+                    "errors":{
+                      "type": "object",
+                      "properties": {
+                        "message": {
+                          "type": "string",
+                          "default": "An error occurred while fetching predicted hotel"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json" : {
+              "schema" : {
+                "type": "object",
+                "required": [
+                  "longtitude",
+                  "latitude"
+                ],
+                "properties": {
+                  "longtitude": {
+                    "type": "number",
+                    "format": "float",
+                    "minLength": 1
+                  },
+                  "latitude" : {
+                    "type": "number",
+                    "format": "float",
+                    "minLength": 1
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tourisms/recommendedTourisms" : {
+      "post" : {
+        "tags": ["Tourism"],
+        "summary": "Get Recommended hotels by tourism location",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "default": "200"
+                    },
+                    "status": {
+                      "type": "string",
+                      "default": "OK"
+                    },
+                    "data":{
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "lodging_id":{
+                            "type": "string"
+                          },
+                          "place_name":{
+                            "type": "string"
+                          },
+                          "rating":{
+                            "type": "string"
+                          },
+                          "city":{
+                            "type": "string"
+                          },
+                          "image_url":{
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "default": "500"
+                    },
+                    "status": {
+                      "type": "string",
+                      "default": "Internal Server Error"
+                    },
+                    "errors":{
+                      "type": "object",
+                      "properties": {
+                        "message": {
+                          "type": "string",
+                          "default": "An error occurred while fetching predicted hotel"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json" : {
+              "examples": {
+                "example": {
+                  "value": {
+                    "city": "string"
+                  }
+                }
+              },
+              "schema": {
+                "type": "object",
+                "required": [
+                  "city"
+                ],
+                "properties": {
+                  "city": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/lodgings" : {
+      "get" : {
+        "tags": ["Lodgings"],
+        "summary": "Get All lodgings",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "default": "200"
+                    },
+                    "status": {
+                      "type": "string",
+                      "default": "OK"
+                    },
+                    "current_page": {
+                      "type": "number",
+                      "default": 1
+                    },
+                    "total_page": {
+                      "type": "number",
+                      "default": 1
+                    },
+                    "total": {
+                      "type": "number",
+                      "default": 10
+                    },
+                    "size": {
+                      "type": "number",
+                      "default": 10
+                    },
+                    "data":{
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "lodging_id":{
+                            "type": "string"
+                          },
+                          "place_name":{
+                            "type": "string"
+                          },
+                          "rating":{
+                            "type": "string"
+                          },
+                          "city":{
+                            "type": "string"
+                          },
+                          "image_url":{
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Places not found or page number exceeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "default": "404"
+                    },
+                    "status": {
+                      "type": "string",
+                      "default": "Not Found"
+                    },
+                    "errors":{
+                      "type": "object",
+                      "properties": {
+                        "message": {
+                          "type": "string",
+                          "default": "Error message"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "default": "500"
+                    },
+                    "status": {
+                      "type": "string",
+                      "default": "Internal Server Error"
+                    },
+                    "errors":{
+                      "type": "object",
+                      "properties": {
+                        "message": {
+                          "type": "string",
+                          "default": "An error occurred while fetching lodging"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "required": false,
+            "description": "Filtered by Lodging name.",
+            "example": "Ritz",
+            "schema" : {
+              "type": "string"
+            }
+          },
+          {
+            "name": "city",
+            "in": "query",
+            "required": false,
+            "example": "Jakarta",
+            "description": "Filtered by Lodging city.",
+            "schema" : {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "description": "Page info.",
+            "schema" : {
+              "type": "number",
+              "default": 1
+            }
+          }
+        ]
+      }
+    },
+    "/lodgings/{lodgingsId}" : {
+      "get" : {
+        "security": [
+          {
+            "BearerAuth" : []
+          }
+        ],
+        "tags": ["Lodgings"],
+        "summary": "Get lodging details",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "default": "200"
+                    },
+                    "status": {
+                      "type": "string",
+                      "default": "OK"
+                    },
+                    "data":{
+                      "type": "object",
+                      "properties": {
+                        "lodging_id": {
+                          "type": "string"
+                        },
+                        "rating": {
+                          "type": "string"
+                        },
+                        "place_name": {
+                          "type": "string"
+                        },
+                        "longtitude": {
+                          "type": "number"
+                        },
+                        "latitude": {
+                          "type": "number"
+                        },
+                        "city": {
+                          "type": "string"
+                        },
+                        "address": {
+                          "type": "string"
+                        },
+                        "image_url": {
+                          "type": "string"
+                        },
+                        "favorited": {
+                          "type": "boolean"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Lodging not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "default": "404"
+                    },
+                    "status": {
+                      "type": "string",
+                      "default": "Not Found"
+                    },
+                    "errors":{
+                      "type": "object",
+                      "properties": {
+                        "message": {
+                          "type": "string",
+                          "default": "Lodging not found"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "default": "500"
+                    },
+                    "status": {
+                      "type": "string",
+                      "default": "Internal Server Error"
+                    },
+                    "errors":{
+                      "type": "object",
+                      "properties": {
+                        "message": {
+                          "type": "string",
+                          "default": "An error occurred while fetching lodging"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "lodgingsId",
+            "in": "path",
+            "required": true,
+            "description": "lodging id",
             "schema" : {
               "type": "string"
             }
